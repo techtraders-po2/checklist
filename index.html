@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Nifty 50 Options Checklist - Dark Theme</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #7c4dff;
+            --primary-light: #b47cff;
+            --primary-dark: #3f1dcb;
+            --secondary: #00e5ff;
+            --secondary-dark: #00b2cc;
+            --bg-dark: #121212;
+            --bg-card: #1e1e1e;
+            --bg-card-light: #252525;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --text-muted: #888888;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --border: #333333;
+            --border-light: #444444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-bg {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 40%;
+            background: rgba(0, 0, 0, 0.1);
+            clip-path: polygon(100% 0, 100% 100%, 0 100%);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .date-display {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            backdrop-filter: blur(5px);
+        }
+
+        .tabs {
+            display: flex;
+            background: var(--bg-card);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 18px 0;
+            text-align: center;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            color: var(--text-secondary);
+        }
+
+        .tab:hover {
+            background: rgba(124, 77, 255, 0.1);
+            color: var(--primary-light);
+        }
+
+        .tab.active {
+            color: var(--secondary);
+            border-bottom: 3px solid var(--secondary);
+            background: rgba(0, 229, 255, 0.05);
+        }
+
+        .tab-content {
+            display: none;
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border);
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .checklist-category {
+            margin-bottom: 30px;
+        }
+
+        .category-title {
+            font-size: 1.2rem;
+            color: var(--primary-light);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .category-title i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: var(--bg-card-light);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .checklist-item:hover {
+            background: #2a2a2a;
+            border-color: var(--border-light);
+        }
+
+        .checklist-item input[type="checkbox"] {
+            margin-right: 15px;
+            margin-top: 3px;
+            transform: scale(1.2);
+            accent-color: var(--primary);
+        }
+
+        .checklist-text {
+            flex: 1;
+            cursor: pointer;
+            color: var(--text-primary);
+        }
+
+        .checklist-item.completed .checklist-text {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        .checklist-item.editing .checklist-text {
+            display: none;
+        }
+
+        .checklist-edit {
+            flex: 1;
+            display: none;
+            padding: 8px 12px;
+            background: var(--bg-dark);
+            border: 1px solid var(--primary);
+            border-radius: 5px;
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+
+        .checklist-item.editing .checklist-edit {
+            display: block;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 10px;
+            margin-left: 15px;
+        }
+
+        .btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 5px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+        }
+
+        .btn-edit {
+            color: var(--primary-light);
+        }
+
+        .btn-delete {
+            color: var(--danger);
+        }
+
+        .btn-save {
+            color: var(--success);
+        }
+
+        .btn-cancel {
+            color: var(--text-muted);
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.1);
+        }
+
+        .add-item {
+            display: flex;
+            margin-top: 15px;
+        }
+
+        .add-item input {
+            flex: 1;
+            padding: 12px 15px;
+            background: var(--bg-card-light);
+            border: 1px solid var(--border);
+            border-radius: 5px 0 0 5px;
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+
+        .add-item input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .add-item button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            font-weight: 600;
+        }
+
+        .add-item button:hover {
+            background: var(--primary-dark);
+        }
+
+        .progress-section {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border);
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: var(--bg-card-light);
+            border-radius: 6px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary), var(--secondary-dark));
+            border-radius: 6px;
+            width: 0%;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+        }
+
+        .progress-stats {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .notes-section {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border);
+        }
+
+        .notes-textarea {
+            width: 100%;
+            height: 150px;
+            padding: 15px;
+            background: var(--bg-card-light);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            font-size: 1rem;
+            resize: vertical;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        .notes-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .save-notes {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+
+        .save-notes:hover {
+            background: var(--primary-dark);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            background: var(--primary-dark);
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .date-display {
+                margin-top: 15px;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .checklist-item {
+                flex-direction: column;
+            }
+            
+            .item-actions {
+                margin-left: 0;
+                margin-top: 10px;
+                align-self: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div>
+                    <h1>Professional Nifty 50 Options Checklist</h1>
+                    <p class="subtitle">Dark Theme - Systematic framework for disciplined trading</p>
+                </div>
+                <div class="date-display" id="current-date">Loading...</div>
+            </div>
+            <div class="header-bg"></div>
+        </header>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="pre-market">Pre-Market Analysis</div>
+            <div class="tab" data-tab="during-market">Trade Execution</div>
+            <div class="tab" data-tab="post-market">Post-Market Review</div>
+        </div>
+
+        <div class="progress-section">
+            <h2 class="section-title">Today's Progress</h2>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div class="progress-stats">
+                <span id="completed-count">0</span> completed
+                <span id="total-count">0</span> total items
+                <span id="progress-percent">0%</span>
+            </div>
+        </div>
+
+        <div class="tab-content active" id="pre-market-content">
+            <h2 class="section-title">Pre-Market Analysis</h2>
+            
+            <div class="checklist-category">
+                <h3 class="category-title"><i class="fas fa-chart-line"></i> Market Context & Trend Analysis</h3>
+                <div id="pre-market-trend-list">
+                    <!-- Items will be dynamically added here -->
+                </div>
+                <div class="add-item">
+                    <input type="text" id="pre-market-trend-input" placeholder="Add new trend analysis item...">
+                    <button id="pre-market-trend-add">Add</button>
+                </div>
+            </div>
+            
+            <div class="checklist-category">
+                <h3 class="category-title"><i class="fas fa-wave-square"></i> Volatility Assessment</h3>
+                <div id="pre-market-volatility-list">
+                    <!-- Items will be dynamically added here -->
+                </div>
+                <div class="add-item">
+                    <input type="text" id="pre-market-volatility-input" placeholder="Add new volatility assessment item...">
+                    <button id="pre-market-volatility-add">Add</button>
+                </div>
+            </div>
+            
+            <div class="checklist-category">
+                <h3 class="category-title"><i class="fas fa-battery-full"></i> Strength & Momentum Analysis</h3>
+                <div id="pre-market-strength-list">
+                    <!-- Items will be dynamically added here -->
+                </div>
+                <div class="add-item">
+                    <input type="text" id="pre-market-strength-input" placeholder="Add new strength analysis item...">
+                    <button id="pre-market-strength-add">Add</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="during-market-content">
+            <h2 class="section-title">Trade Execution</h2>
+            
+            <div class="checklist-category">
+                <h3 class="category-title"><i class="fas fa-search"></i> Setup Confluence & Confirmation</h3>
+                <div id="during-market-setup-list">
+                    <!-- Items will be dynamically added here -->
+                </div>
+                <div class="add-item">
+                    <input type="text" id="during-market-setup-input" placeholder="Add new setup confirmation item...">
+                    <button id="during-market-setup-add">Add</button>
+                </div>
+            </div>
+            
+            <div class="checklist-category">
+                <h3 class="category-title"><i class="fas fa-balance-scale"></i> Advanced Risk/Reward Management</h3>
+                <div id="during-market-risk-list">
+                    <!-- Items will be dynamically added here -->
+                </div>
+                <div class="add-item">
+                    <input type="text" id="during-market-risk-input" placeholder="Add new risk management item...">
+                    <button id="during-market-risk-add">Add</button>
+                </div>
+            </div>
+            
+            <div class="checklist-category">
+                <h3 class="category-title"><i class="fas fa-cogs"></i> Trade Structure & Greeks</h3>
+                <div id="during-market-structure-list">
+                    <!-- Items will be dynamically added here -->
+                </div>
+                <div class="add-item">
+                    <input type="text" id="during-market-structure-input" placeholder="Add new trade structure item...">
+                    <button id="during-market-structure-add">Add</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="post-market-content">
+            <h2 class="section-title">Post-Market Review</h2>
+            
+            <div class="checklist-category">
+                <h3 class="category-title"><i class="fas fa-clipboard-check"></i> Performance Analysis</h3>
+                <div id="post-market-performance-list">
+                    <!-- Items will be dynamically added here -->
+                </div>
+                <div class="add-item">
+                    <input type="text" id="post-market-performance-input" placeholder="Add new performance analysis item...">
+                    <button id="post-market-performance-add">Add</button>
+                </div>
+            </div>
+            
+            <div class="checklist-category">
+                <h3 class="category-title"><i class="fas fa-brain"></i> Psychology & Process Review</h3>
+                <div id="post-market-psychology-list">
+                    <!-- Items will be dynamically added here -->
+                </div>
+                <div class="add-item">
+                    <input type="text" id="post-market-psychology-input" placeholder="Add new psychology review item...">
+                    <button id="post-market-psychology-add">Add</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="notes-section">
+            <h2 class="section-title">Trading Notes & Observations</h2>
+            <textarea class="notes-textarea" id="trading-notes" placeholder="Record your observations, market insights, trade rationales, and lessons learned..."></textarea>
+            <button class="save-notes" id="save-notes">Save Notes</button>
+        </div>
+
+        <footer>
+            <p>Professional Nifty 50 Options Checklist • Dark Theme • Data is saved locally in your browser</p>
+        </footer>
+
+        <button class="theme-toggle" id="theme-toggle" title="Toggle light/dark theme">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <script>
+        // Initialize default checklist items
+        const defaultChecklist = {
+            "pre-market-trend": [
+                "Primary Trend: Check Daily/Weekly chart direction",
+                "Intraday Bias: Align with 30min/1hr chart structure",
+                "Key Support/Resistance: Previous day H/L, Pivots, VWAP, 20 EMA",
+                "Global Indices: Check DOW, NASDAQ, SGX Nifty correlation"
+            ],
+            "pre-market-volatility": [
+                "IV Rank/Percentile: Check if IV is high (>70) or low (<30)",
+                "Volatility Skew: Analyze PUT-CALL IV differences for key strikes",
+                "Expected Move: Calculate (ATM IV * Spot Price * √(DTE/365))",
+                "VIX Analysis: Check India VIX trend and levels"
+            ],
+            "pre-market-strength": [
+                "Momentum Confirmation: Check RSI/MACD on key timeframes for divergence",
+                "Breadth Analysis: Check Advance-Decline ratio, Bank Nifty vs Nifty relative strength",
+                "Volume Analysis: Confirm breakouts with volume confirmation",
+                "Sector Rotation: Identify leading and lagging sectors"
+            ],
+            "during-market-setup": [
+                "A+ Setup: Wait for minimum 3 confirmations (Trend + Level + Volume)",
+                "Patience for Trigger: Enter on retest of breakout level, not initial break",
+                "False Break Protection: Wait for candle close above/below key level",
+                "Time Filter: Avoid trades in first 15 mins unless clear trend"
+            ],
+            "during-market-risk": [
+                "R:R Ratio: Ensure minimum 1:2 Risk:Reward ratio",
+                "Position Sizing: Calculate based on (Max Risk / (Entry - Stop Loss))",
+                "Daily Loss Limit: Enforce maximum 2% of capital loss limit",
+                "Portfolio Exposure: Check overall delta, gamma, vega exposure"
+            ],
+            "during-market-structure": [
+                "Spread vs Naked: Consider debit/credit spreads to optimize risk",
+                "Greek Check: Be aware of primary risk (Theta, Delta, Gamma)",
+                "Limit Orders: Use limit orders for entry, not market orders",
+                "Staggered Entry/Exit: Consider partial positions and profit-taking"
+            ],
+            "post-market-performance": [
+                "Trade Journal: Record setup type, R:R, MFE, MAE for each trade",
+                "Process Score: Rate checklist adherence (1-10) separate from P&L",
+                "Missed Opportunities: Analyze high-probability setups not taken",
+                "Edge Refinement: Identify which setups performed best/worst"
+            ],
+            "post-market-psychology": [
+                "Mental Capital Audit: Assess decision-making quality and fatigue",
+                "Rule Breaks: Identify and analyze any checklist violations",
+                "Emotional State: Note any fear/greed/exuberance influencing decisions",
+                "Improvement Plan: Create one specific action for tomorrow"
+            ]
+        };
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current date
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', options);
+            
+            // Load checklist data from localStorage or initialize with defaults
+            let checklistData = JSON.parse(localStorage.getItem('niftyChecklist')) || defaultChecklist;
+            let notes = localStorage.getItem('niftyNotes') || '';
+            
+            // Load notes
+            document.getElementById('trading-notes').value = notes;
+            
+            // Render all checklists
+            renderAllChecklists(checklistData);
+            
+            // Set up tab switching
+            setupTabs();
+            
+            // Set up add item functionality
+            setupAddItemButtons(checklistData);
+            
+            // Set up notes saving
+            document.getElementById('save-notes').addEventListener('click', saveNotes);
+            
+            // Set up theme toggle
+            document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+            
+            // Calculate and display progress
+            updateProgress(checklistData);
+        });
+
+        // Render all checklist categories
+        function renderAllChecklists(data) {
+            for (const category in data) {
+                renderChecklist(category, data[category]);
+            }
+        }
+
+        // Render a specific checklist
+        function renderChecklist(categoryId, items) {
+            const listContainer = document.getElementById(`${categoryId}-list`);
+            listContainer.innerHTML = '';
+            
+            items.forEach((item, index) => {
+                const isCompleted = item.checked || (typeof item === 'object' && item.checked);
+                const itemText = item.text || item;
+                
+                const itemElement = document.createElement('div');
+                itemElement.className = `checklist-item ${isCompleted ? 'completed' : ''}`;
+                itemElement.innerHTML = `
+                    <input type="checkbox" id="${categoryId}-${index}" ${isCompleted ? 'checked' : ''}>
+                    <label class="checklist-text" for="${categoryId}-${index}">${itemText}</label>
+                    <input type="text" class="checklist-edit" value="${itemText}">
+                    <div class="item-actions">
+                        <button class="btn btn-edit" data-category="${categoryId}" data-index="${index}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-delete" data-category="${categoryId}" data-index="${index}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <button class="btn btn-save" data-category="${categoryId}" data-index="${index}" style="display: none;">
+                            <i class="fas fa-check"></i>
+                        </button>
+                        <button class="btn btn-cancel" data-category="${categoryId}" data-index="${index}" style="display: none;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `;
+                listContainer.appendChild(itemElement);
+                
+                // Add event listeners
+                const checkbox = document.getElementById(`${categoryId}-${index}`);
+                checkbox.addEventListener('change', function() {
+                    toggleChecklistItem(categoryId, index);
+                });
+                
+                const editBtn = itemElement.querySelector('.btn-edit');
+                const deleteBtn = itemElement.querySelector('.btn-delete');
+                const saveBtn = itemElement.querySelector('.btn-save');
+                const cancelBtn = itemElement.querySelector('.btn-cancel');
+                
+                editBtn.addEventListener('click', function() {
+                    enableEditMode(categoryId, index);
+                });
+                
+                deleteBtn.addEventListener('click', function() {
+                    deleteChecklistItem(categoryId, index);
+                });
+                
+                saveBtn.addEventListener('click', function() {
+                    saveChecklistItem(categoryId, index);
+                });
+                
+                cancelBtn.addEventListener('click', function() {
+                    cancelEdit(categoryId, index);
+                });
+            });
+        }
+
+        // Set up tab functionality
+        function setupTabs() {
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Update active tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show active tab content
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    document.getElementById(`${tabId}-content`).classList.add('active');
+                });
+            });
+        }
+
+        // Set up add item buttons
+        function setupAddItemButtons(data) {
+            // Pre-market trend
+            document.getElementById('pre-market-trend-add').addEventListener('click', function() {
+                addChecklistItem('pre-market-trend', document.getElementById('pre-market-trend-input').value, data);
+            });
+            
+            // Pre-market volatility
+            document.getElementById('pre-market-volatility-add').addEventListener('click', function() {
+                addChecklistItem('pre-market-volatility', document.getElementById('pre-market-volatility-input').value, data);
+            });
+            
+            // Pre-market strength
+            document.getElementById('pre-market-strength-add').addEventListener('click', function() {
+                addChecklistItem('pre-market-strength', document.getElementById('pre-market-strength-input').value, data);
+            });
+            
+            // During market setup
+            document.getElementById('during-market-setup-add').addEventListener('click', function() {
+                addChecklistItem('during-market-setup', document.getElementById('during-market-setup-input').value, data);
+            });
+            
+            // During market risk
+            document.getElementById('during-market-risk-add').addEventListener('click', function() {
+                addChecklistItem('during-market-risk', document.getElementById('during-market-risk-input').value, data);
+            });
+            
+            // During market structure
+            document.getElementById('during-market-structure-add').addEventListener('click', function() {
+                addChecklistItem('during-market-structure', document.getElementById('during-market-structure-input').value, data);
+            });
+            
+            // Post market performance
+            document.getElementById('post-market-performance-add').addEventListener('click', function() {
+                addChecklistItem('post-market-performance', document.getElementById('post-market-performance-input').value, data);
+            });
+            
+            // Post market psychology
+            document.getElementById('post-market-psychology-add').addEventListener('click', function() {
+                addChecklistItem('post-market-psychology', document.getElementById('post-market-psychology-input').value, data);
+            });
+        }
+
+        // Toggle checklist item
+        function toggleChecklistItem(category, index) {
+            let checklistData = JSON.parse(localStorage.getItem('niftyChecklist'));
+            if (!checklistData[category][index].text) {
+                checklistData[category][index] = {
+                    text: checklistData[category][index],
+                    checked: !checklistData[category][index].checked
+                };
+            } else {
+                checklistData[category][index].checked = !checklistData[category][index].checked;
+            }
+            localStorage.setItem('niftyChecklist', JSON.stringify(checklistData));
+            renderChecklist(category, checklistData[category]);
+            updateProgress(checklistData);
+        }
+
+        // Enable edit mode for a checklist item
+        function enableEditMode(category, index) {
+            const itemElement = document.querySelector(`[data-category="${category}"][data-index="${index}"]`).closest('.checklist-item');
+            itemElement.classList.add('editing');
+            
+            const editBtn = itemElement.querySelector('.btn-edit');
+            const deleteBtn = itemElement.querySelector('.btn-delete');
+            const saveBtn = itemElement.querySelector('.btn-save');
+            const cancelBtn = itemElement.querySelector('.btn-cancel');
+            
+            editBtn.style.display = 'none';
+            deleteBtn.style.display = 'none';
+            saveBtn.style.display = 'block';
+            cancelBtn.style.display = 'block';
+        }
+
+        // Save edited checklist item
+        function saveChecklistItem(category, index) {
+            const itemElement = document.querySelector(`[data-category="${category}"][data-index="${index}"]`).closest('.checklist-item');
+            const newText = itemElement.querySelector('.checklist-edit').value;
+            
+            let checklistData = JSON.parse(localStorage.getItem('niftyChecklist'));
+            if (!checklistData[category][index].text) {
+                checklistData[category][index] = {
+                    text: newText,
+                    checked: checklistData[category][index].checked || false
+                };
+            } else {
+                checklistData[category][index].text = newText;
+            }
+            
+            localStorage.setItem('niftyChecklist', JSON.stringify(checklistData));
+            renderChecklist(category, checklistData[category]);
+            updateProgress(checklistData);
+        }
+
+        // Cancel edit mode
+        function cancelEdit(category, index) {
+            const itemElement = document.querySelector(`[data-category="${category}"][data-index="${index}"]`).closest('.checklist-item');
+            itemElement.classList.remove('editing');
+            
+            const editBtn = itemElement.querySelector('.btn-edit');
+            const deleteBtn = itemElement.querySelector('.btn-delete');
+            const saveBtn = itemElement.querySelector('.btn-save');
+            const cancelBtn = itemElement.querySelector('.btn-cancel');
+            
+            editBtn.style.display = 'block';
+            deleteBtn.style.display = 'block';
+            saveBtn.style.display = 'none';
+            cancelBtn.style.display = 'none';
+        }
+
+        // Delete checklist item
+        function deleteChecklistItem(category, index) {
+            let checklistData = JSON.parse(localStorage.getItem('niftyChecklist'));
+            checklistData[category].splice(index, 1);
+            localStorage.setItem('niftyChecklist', JSON.stringify(checklistData));
+            renderChecklist(category, checklistData[category]);
+            updateProgress(checklistData);
+        }
+
+        // Add new checklist item
+        function addChecklistItem(category, text, data) {
+            if (!text.trim()) return;
+            
+            let checklistData = JSON.parse(localStorage.getItem('niftyChecklist'));
+            checklistData[category].push({
+                text: text,
+                checked: false
+            });
+            localStorage.setItem('niftyChecklist', JSON.stringify(checklistData));
+            renderChecklist(category, checklistData[category]);
+            
+            // Clear input
+            document.getElementById(`${category}-input`).value = '';
+            updateProgress(checklistData);
+        }
+
+        // Save notes
+        function saveNotes() {
+            const notes = document.getElementById('trading-notes').value;
+            localStorage.setItem('niftyNotes', notes);
+            
+            // Show confirmation
+            const saveBtn = document.getElementById('save-notes');
+            const originalText = saveBtn.textContent;
+            saveBtn.textContent = 'Saved!';
+            saveBtn.style.background = 'var(--success)';
+            
+            setTimeout(() => {
+                saveBtn.textContent = originalText;
+                saveBtn.style.background = 'var(--primary)';
+            }, 1500);
+        }
+
+        // Update progress
+        function updateProgress(data) {
+            let totalItems = 0;
+            let completedItems = 0;
+            
+            for (const category in data) {
+                data[category].forEach(item => {
+                    totalItems++;
+                    if (item.checked || (typeof item === 'object' && item.checked)) {
+                        completedItems++;
+                    }
+                });
+            }
+            
+            const progressPercent = totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
+            
+            document.getElementById('completed-count').textContent = completedItems;
+            document.getElementById('total-count').textContent = totalItems;
+            document.getElementById('progress-percent').textContent = `${progressPercent}%`;
+            document.getElementById('progress-fill').style.width = `${progressPercent}%`;
+        }
+
+        // Toggle theme (placeholder for future implementation)
+        function toggleTheme() {
+            const themeIcon = document.querySelector('#theme-toggle i');
+            if (themeIcon.classList.contains('fa-moon')) {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+                // In a real implementation, you would switch to light theme here
+                alert("Light theme would be activated here. This is a dark theme demo.");
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+                // This is already dark theme, so no change needed
+            }
+        }
+    </script>
+</body>
+</html>
